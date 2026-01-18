@@ -1,0 +1,33 @@
+spring:
+  kafka:
+    bootstrap-servers: localhost:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      acks: all
+      retries: 3
+      properties:
+        batch.size: 16384
+        linger.ms: 5
+  application:
+    name: wikimedia-producer
+
+wikimedia:
+  stream:
+    url: https://stream.wikimedia.org/v2/stream/recentchange
+  kafka:
+    topic: wikimedia.recentchange
+
+server:
+  port: 8081
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+
+logging:
+  level:
+    com.wikimedia.producer: INFO
+    org.apache.kafka: WARN
