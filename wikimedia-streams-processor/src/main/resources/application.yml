@@ -1,6 +1,6 @@
 spring:
   kafka:
-    bootstrap-servers: localhost:9092
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
     streams:
       application-id: wikimedia-streams-processor
       properties:
@@ -12,7 +12,7 @@ spring:
     name: wikimedia-streams-processor
 
 server:
-  port: 8082
+  port: ${STREAMS_PROCESSOR_PORT:8082}
 
 management:
   endpoints:

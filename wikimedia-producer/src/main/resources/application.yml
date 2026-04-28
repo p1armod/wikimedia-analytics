@@ -1,6 +1,6 @@
 spring:
   kafka:
-    bootstrap-servers: localhost:9092
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
@@ -14,12 +14,12 @@ spring:
 
 wikimedia:
   stream:
-    url: https://stream.wikimedia.org/v2/stream/recentchange
+    url: ${WIKIMEDIA_STREAM_URL:https://stream.wikimedia.org/v2/stream/recentchange}
   kafka:
     topic: wikimedia.recentchange
 
 server:
-  port: 8081
+  port: ${PRODUCER_PORT:8081}
 
 management:
   endpoints:

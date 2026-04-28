@@ -1,15 +1,15 @@
 spring:
   kafka:
-    bootstrap-servers: localhost:9092
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
     consumer:
       group-id: wikimedia-gateway
       auto-offset-reset: latest
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
   datasource:
-    url: jdbc:postgresql://localhost:5433/wikimedia_analytics
-    username: wikimedia
-    password: wikimedia
+    url: jdbc:postgresql://${POSTGRES_HOST:localhost}:${POSTGRES_PORT:5433}/${POSTGRES_DB:wikimedia_analytics}
+    username: ${POSTGRES_USER:wikimedia}
+    password: ${POSTGRES_PASSWORD:wikimedia}
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
@@ -20,16 +20,16 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
   data:
     redis:
-      host: localhost
-      port: 6379
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
   application:
     name: wikimedia-gateway
 
 server:
-  port: 8080
+  port: ${GATEWAY_PORT:8080}
 
 cors:
-  allowed-origins: http://localhost:5173,http://localhost:5176
+  allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:5173,http://localhost:5176}
 
 management:
   endpoints:
