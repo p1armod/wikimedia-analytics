@@ -8,7 +8,8 @@
 set -e
 
 # ---- Configuration ----
-APP_DIR="$HOME/wikimedia-analytics"
+# Auto-detect project directory (wherever this script lives)
+APP_DIR="$(cd "$(dirname "$0")" && pwd)"
 LOG_DIR="$APP_DIR/logs"
 PID_DIR="$APP_DIR/pids"
 JAVA_OPTS="-Xmx384m -Xms256m"
@@ -26,10 +27,23 @@ export POSTGRES_PASSWORD="wikimedia"
 export REDIS_HOST="localhost"
 export REDIS_PORT="6379"
 
-# Service JARs (adjust version if needed)
-PRODUCER_JAR="$APP_DIR/wikimedia-producer/target/wikimedia-producer-0.0.1-SNAPSHOT.jar"
-STREAMS_JAR="$APP_DIR/wikimedia-streams-processor/target/wikimedia-streams-processor-0.0.1-SNAPSHOT.jar"
-GATEWAY_JAR="$APP_DIR/wikimedia-websocket-gateway/target/wikimedia-websocket-gateway-0.0.1-SNAPSHOT.jar"
+# Service JAR directories
+PRODUCER_DIR="$APP_DIR/wikimedia-producer/target"
+STREAMS_DIR="$APP_DIR/wikimedia-streams-processor/target"
+GATEWAY_DIR="$APP_DIR/wikimedia-websocket-gateway/target"
+
+# Auto-detect JAR files (finds the main JAR, ignoring -sources, -javadoc, etc.)
+find_jar() {
+    local dir=$1
+    local name=$2
+    # Find the JAR matching the artifact name, exclude auxiliary JARs
+    local jar=$(ls "$dir"/${name}-*.jar 2>/dev/null | grep -v sources | grep -v javadoc | grep -v original | head -1)
+    echo "$jar"
+}
+
+PRODUCER_JAR=$(find_jar "$PRODUCER_DIR" "wikimedia-producer")
+STREAMS_JAR=$(find_jar "$STREAMS_DIR" "wikimedia-streams-processor")
+GATEWAY_JAR=$(find_jar "$GATEWAY_DIR" "wikimedia-websocket-gateway")
 
 # Service names (for display and PID files)
 SERVICES=("producer" "streams" "gateway")
