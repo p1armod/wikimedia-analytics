@@ -20,7 +20,7 @@ export CORS_ALLOWED_ORIGINS="http://localhost:5173,https://wikimedia-dashboard.v
 # Infrastructure (defaults match docker-compose on same server)
 export KAFKA_BOOTSTRAP_SERVERS="localhost:9092"
 export POSTGRES_HOST="localhost"
-export POSTGRES_PORT="5433"
+export POSTGRES_PORT="5434"
 export POSTGRES_DB="wikimedia_analytics"
 export POSTGRES_USER="wikimedia"
 export POSTGRES_PASSWORD="wikimedia"
